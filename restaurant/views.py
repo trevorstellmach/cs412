@@ -4,12 +4,13 @@
 
 import random
 from django.shortcuts import render
+from django.http import HttpResponse
 
 specials = [
     "Pigs-in-a-blanket",
     "Chili Dog",
     "Corn Dog",
-    "Foot-long Dog"
+    "Foot-Long Dog"
 ]
 
 # Create your views here.
@@ -25,7 +26,7 @@ def order(request):
 
     #context variables
     context = {
-        "special": specials[random.randInt(0, len(specials) - 1)]   # picks random special
+        "special": specials[random.randint(0, len(specials) - 1)]   # picks random special
     }
 
     template_name = "restaurant/order.html"     # assigns order html file to template_name
@@ -34,3 +35,15 @@ def order(request):
 
 def confirmation(request):
     """ responds to 'confirmation' url """
+
+    print(request.POST)
+
+    # check if POST data exists
+    # if request.POST:
+
+    #     # pull form fields into data
+
+
+    template_name = "restaurant/confirmation.html"
+
+    return render(request, template_name, )
