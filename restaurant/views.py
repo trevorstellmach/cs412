@@ -13,6 +13,17 @@ specials = [
     "Foot-Long Dog"
 ]
 
+prices = {
+    "Classic Dog": 8,
+    "Ketchup": 0.5,
+    "Mustard": 0.5,
+    "Relish": 0.5,
+    "Chicago Dog": 9,
+    "Fully Loaded Dog": 11,
+    "Short Dog": 7,
+    "Special": 8
+}
+
 # Create your views here.
 def main(request):
     """ responds to 'main' url """
@@ -38,12 +49,26 @@ def confirmation(request):
 
     print(request.POST)
 
+    cost = 0
+    food_order = []
+    toppings = []
+    instructs = ""
+    name = ""
+    number = ""
+    email = ""
+
     # check if POST data exists
-    # if request.POST:
+    #if request.POST:
 
-    #     # pull form fields into data
+    # pull form fields into data
+    for x in request.POST:
+        print(request.POST[x])
 
+
+    #context = {
+
+    
 
     template_name = "restaurant/confirmation.html"
 
-    return render(request, template_name, )
+    return render(request, template_name)

@@ -1,0 +1,10 @@
+.toppings {
+    opacity: 0.5;
+    pointer-events: none;
+    margin-left: 30px;
+}
+
+#classic-dog:checked ~ .toppings {
+    opacity: 1;
+    pointer-events: auto;
+}

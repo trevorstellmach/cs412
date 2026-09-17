@@ -4,14 +4,19 @@
 
 {% block content %}
 
-    <div>
+    <div class="form">
         <h1>Order Form</h1>
 
         <form action="{% url 'confirmation_page' %}" method="POST">
             {% csrf_token %}
 
             <h3>What would you like?</h3>
-            <input type="checkbox" name="Classic Dog"> Classic Dog ($8)<br>
+            <input type="checkbox" id="classic-dog" name="Classic Dog"> Classic Dog ($8)<br>
+            <div class="toppings">
+                <input type="checkbox" name="Ketchup"> Ketchup (+$0.50) <br>
+                <input type="checkbox" name="Mustard"> Mustard (+$0.50) <br>
+                <input type="checkbox" name="Relish"> Relish (+$0.50) <br>
+            </div>
             <input type="checkbox" name="Chicago Dog"> Chicago Dog ($9)<br>
             <input type="checkbox" name="Fully Loaded Dog"> Fully Loaded Dog ($11)<br>
             <input type="checkbox" name="Short Dog"> Short Dog ($7)<br>
