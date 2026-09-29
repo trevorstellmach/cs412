@@ -1,21 +1,18 @@
+<!-- mini_insta/show_all_profiles.html -->
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
 
-    {% for profile in profiles %}
-
-    <main class="grid-container">
-        <h2>{{profile.username}}</h2>
-        <h2>{{profile.display_name}}</h2>
-        <a href="{% url 'show_profile' profile.pk %}">
-            <img src="{{profile.profile_image_url}}" alt="">
-        </a>
-        
-        <p>{{profile.bio_text}}</p>
-        <p>{{profile.join_date}}</p>
+    <main class="grid-container"></main>
+        {% for profile in profiles %}
+            <div class="grid profile-card">
+                <a href="{% url 'show_profile' profile.pk %}">
+                    <img src="{{profile.profile_image_url}}" alt="">
+                </a>
+                <h2>{{profile.display_name}}</h2>
+                <h3>@{{profile.username}}</h3>
+            </div>
+        {% endfor %}
     </main>
-
-
-    {% endfor %}
 
 {% endblock %}

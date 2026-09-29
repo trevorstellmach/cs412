@@ -1,9 +1,40 @@
+<!-- mini_insta/show_profile.html -->
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
-    <h1>{{profile.username}}</h1>
-    <h1>{{profile.display_name}}</h1>
-    <img src="{{profile.profile_image_url}}" alt="">
-    <p>{{profile.bio_text}}</p>
-    <p>{{profile.join_date}}</p>
+
+    <main class="grid-container">
+        <div class="grid-container">
+            <div class="grid profile-header">
+
+                <div class="profile image">
+                    <img src="{{profile.profile_image_url}}" alt="">
+                </div>
+
+                <div class="profile info">
+                    <div class="grid profile-names">
+                        <h1>{{profile.display_name}}</h1>
+                        <h3>@{{profile.username}}</h1>
+                    </div>
+                    <div class="grid profile-stats">
+                        <div class="profile-stats-item">
+                            <p>TBD</p>
+                        </div>
+                        <div class="profile-stats-item">
+                            <p>TBD</p>
+                        </div>
+                        <div class="profile-stats-item">
+                            <p>TBD</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <p>{{profile.bio_text | linebreaksbr}}</p>
+            <p>{{profile.join_date}}</p>
+            <h2>Posts</h2>
+        </div>
+    </main>
+
 {% endblock %}
