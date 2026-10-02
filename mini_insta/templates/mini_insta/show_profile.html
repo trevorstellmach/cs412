@@ -34,6 +34,15 @@
             <p>{{profile.bio_text | linebreaksbr}}</p>
             <p>{{profile.join_date}}</p>
             <h2>Posts</h2>
+            <div class="grid posts">
+                {% for post in profile.get_all_posts %}
+                    {% if not post.get_all_photos %}
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSKKzAcX4o85e8WqOLI80UB1H5sOOUlwW8XKy8EIxl3Q&s=10" alt="">
+                    {% else %}
+                        <img src="{{post.get_cover_photo.image_url}}" alt="">
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
     </main>
 
