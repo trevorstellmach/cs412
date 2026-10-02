@@ -3,47 +3,53 @@
 
 {% block content %}
 
-    <main class="grid-container">
-        <div class="grid-container">
-            <div class="grid profile-header">
+<main class="grid-container">
+    <div class="grid-container">
+        <div class="grid profile-header">
 
-                <div class="profile image">
-                    <img src="{{profile.profile_image_url}}" alt="">
+            <div class="profile image">
+                <img src="{{profile.profile_image_url}}" alt="">
+            </div>
+
+            <div class="profile info">
+                <div class="grid profile-names">
+                    <h1>{{profile.display_name}}</h1>
+                    <h3>@{{profile.username}}</h1>
                 </div>
-
-                <div class="profile info">
-                    <div class="grid profile-names">
-                        <h1>{{profile.display_name}}</h1>
-                        <h3>@{{profile.username}}</h1>
+                <div class="grid profile-stats">
+                    <div class="profile-stats-item">
+                        <p>TBD</p>
                     </div>
-                    <div class="grid profile-stats">
-                        <div class="profile-stats-item">
-                            <p>TBD</p>
-                        </div>
-                        <div class="profile-stats-item">
-                            <p>TBD</p>
-                        </div>
-                        <div class="profile-stats-item">
-                            <p>TBD</p>
-                        </div>
+                    <div class="profile-stats-item">
+                        <p>TBD</p>
                     </div>
-
+                    <div class="profile-stats-item">
+                        <p>TBD</p>
+                    </div>
                 </div>
 
             </div>
-            <p>{{profile.bio_text | linebreaksbr}}</p>
-            <p>{{profile.join_date}}</p>
-            <h2>Posts</h2>
-            <div class="grid posts">
-                {% for post in profile.get_all_posts %}
-                    {% if not post.get_all_photos %}
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSKKzAcX4o85e8WqOLI80UB1H5sOOUlwW8XKy8EIxl3Q&s=10" alt="">
-                    {% else %}
-                        <img src="{{post.get_cover_photo.image_url}}" alt="">
-                    {% endif %}
-                {% endfor %}
-            </div>
+
         </div>
-    </main>
+        <p>{{profile.bio_text | linebreaksbr}}</p>
+        <p>{{profile.join_date}}</p>
+        <h2>Posts</h2>
+        <div class="grid posts">
+            {% for post in profile.get_all_posts %}
+            {% if not post.get_all_photos %}
+            <a href="{% url 'show_post' post.pk %}">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSKKzAcX4o85e8WqOLI80UB1H5sOOUlwW8XKy8EIxl3Q&s=10"
+                    alt="">
+            </a>
+            {% else %}
+            <a href="{% url 'show_post' post.pk %}">
+                <img src="{{post.get_cover_photo.image_url}}"
+                    alt="">
+            </a>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</main>
 
 {% endblock %}
