@@ -1,0 +1,21 @@
+<!-- mini_insta/show_post.html -->
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+<h1>Create Post</h1>
+<form method="POST">
+    {% csrf_token %}
+    
+    <table>
+        {{form.as_table}}
+    </table>
+    <table>
+        <strong>Image URL: </strong><input type="text">
+    </table>
+
+
+    <input type="submit" name="submit" value="Submit">
+    <a href="{% url 'show_profile' 1 %}">Cancel</a>
+</form>
+
+{% endblock %}
