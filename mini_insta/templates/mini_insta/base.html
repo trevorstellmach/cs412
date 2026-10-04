@@ -17,5 +17,8 @@
     </body>
     <footer>
         <a href="{% url 'show_all_profiles' %}">Show All</a>
+        {% if profile %}
+        <a href="{% url 'create_post' profile.pk %}">Create Post</a>
+        {% endif %}
     </footer>
  </html>

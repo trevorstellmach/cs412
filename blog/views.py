@@ -90,7 +90,7 @@ class CreateCommentView(CreateView):
         return super().form_valid(form)
         
             
-    ## show how the reverse function uses the urls.py to find the URL pattern
+
     def get_success_url(self):
         '''Provide a URL to redirect to after creating a new Comment.'''
  

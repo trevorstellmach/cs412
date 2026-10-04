@@ -2,9 +2,12 @@
 # Author: Trevor Stellmach, tstell@bu.edu (09/26/26)
 # Description: mini_insta site views file
 
+from datetime import datetime
+
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView
-from .models import Profile, Post
+from django.urls import reverse
+from .models import Profile, Post, Photo
 from .forms import CreatePostForm
 
 # Create your views here.
@@ -34,3 +37,42 @@ class CreatePostView(CreateView):
 
     form_class = CreatePostForm
     template_name = "mini_insta/create_post_form.html"
+
+    def get_context_data(self):
+        "Return the dictionary of context variables for use in the template"
+
+        # calling superclass method
+        context = super().get_context_data()
+
+        pk = self.kwargs['pk']
+        profile = Profile.objects.get(pk=pk)
+
+        context['profile'] = profile
+        return context
+
+    def form_valid(self, form):
+        """handles form submission"""
+
+        pk = self.kwargs['pk']
+        profile = Profile.objects.get(pk=pk)
+        form.instance.profile = profile
+
+        timestamp = datetime.now()
+        form.instance.timestamp = timestamp
+
+        response = super().form_valid(form)
+
+        Photo.objects.create(
+            post = self.object,
+            image_url = self.request.POST["img_url"],
+            timestamp = datetime.now()
+        )
+
+        return response
+
+    def get_success_url(self):
+        '''Provide a URL to redirect to after creating a new Post.'''
+
+        # go to post after it's been created
+        return reverse('show_post', kwargs={'pk': self.object.pk})
+
