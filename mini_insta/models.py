@@ -56,7 +56,24 @@ class Photo(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     image_url = models.URLField(blank=True)
     timestamp = models.DateTimeField(blank=True)
+    image_file = models.ImageField(upload_to="mini_insta/", blank=True)
+
+    def get_image_url(self):
+        """returns image url"""
+        
+        if self.image_url:
+            return self.image_url
+        elif self.image_file:
+            return self.image_file.url
+        else:
+            return "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSKKzAcX4o85e8WqOLI80UB1H5sOOUlwW8XKy8EIxl3Q&s=10"
 
     def __str__(self):
         """Reformats string representation of Photo model"""
-        return f'{self.post}, {self.image_url}, {self.timestamp}'
+        
+        if self.image_url:
+            return f'{self.post}, {self.image_url}, {self.timestamp}'
+        elif self.image_file:
+            return f'{self.post}, {self.image_file.url}, {self.timestamp}'
+        else:
+            return f'{self.post}, https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSKKzAcX4o85e8WqOLI80UB1H5sOOUlwW8XKy8EIxl3Q&s=10, {self.timestamp}'

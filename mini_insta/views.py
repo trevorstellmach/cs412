@@ -62,11 +62,15 @@ class CreatePostView(CreateView):
 
         response = super().form_valid(form)
 
-        Photo.objects.create(
-            post = self.object,
-            image_url = self.request.POST["img_url"],
-            timestamp = datetime.now()
-        )
+        files = self.request.FILES.getlist('image_file')
+        print("MY FILES: ", files)
+        for img in files:
+            Photo.objects.create(
+                post = self.object,
+                #image_url = self.request.POST["img_url"],
+                image_file = img,
+                timestamp = datetime.now()
+            )
 
         return response
 
