@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.urls import reverse
 from .models import Article
-from .forms import CreateArticleForm, CreateCommentForm
+from .forms import CreateArticleForm, CreateCommentForm, UpdateArticleForm
 import random
 
 # Create your views here.
@@ -109,3 +109,9 @@ class CreateCommentView(CreateView):
         article = Article.objects.get(pk=pk)
         context['article'] = article
         return context
+
+class UpdateArticleView(UpdateView):
+
+    model = Article
+    form_class = UpdateArticleForm
+    template_name = 'blog/update_article_form.html'

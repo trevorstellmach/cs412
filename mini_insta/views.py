@@ -5,10 +5,10 @@
 from datetime import datetime
 
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.urls import reverse
 from .models import Profile, Post, Photo
-from .forms import CreatePostForm
+from .forms import CreatePostForm, UpdateProfileForm
 
 # Create your views here.
 class ProfileListView(ListView):
@@ -80,3 +80,9 @@ class CreatePostView(CreateView):
         # go to post after it's been created
         return reverse('show_post', kwargs={'pk': self.object.pk})
 
+class UpdateProfileView(UpdateView):
+    """Subclass of UpdateView that updates Profiles"""
+
+    model = Profile
+    form_class = UpdateProfileForm
+    template_name = 'mini_insta/update_profile_form.html'

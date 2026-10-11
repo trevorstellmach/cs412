@@ -3,6 +3,7 @@
 # Description: mini_insta site models file
 
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 class Profile(models.Model):
@@ -24,6 +25,10 @@ class Profile(models.Model):
         """returns all posts for a given profile"""
         posts = Post.objects.filter(profile=self).order_by('timestamp')
         return posts
+
+    def get_absolute_url(self):
+        """returns url back to profile page"""
+        return reverse('show_profile', kwargs={'pk': self.pk})
 
 class Post(models.Model):
     """Defines Post model"""

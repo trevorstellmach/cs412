@@ -33,6 +33,9 @@
         </div>
         <p>{{profile.bio_text | linebreaksbr}}</p>
         <p>{{profile.join_date}}</p>
+        <a href="{% url 'update_profile' profile.pk %}">
+            Update Profile
+        </a>
         <h2>Posts</h2>
         <div class="grid posts">
             {% for post in profile.get_all_posts %}

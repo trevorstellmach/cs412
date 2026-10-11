@@ -5,11 +5,12 @@
 from django.urls import path
 from django.conf import settings
 from . import views
-from .views import ProfileListView, ProfileDetailView, PostDetailView, CreatePostView
+from .views import *
 
 urlpatterns = [
     path('', ProfileListView.as_view(), name="show_all_profiles"), # home page
     path('profile/<int:pk>', ProfileDetailView.as_view(), name="show_profile"), # profile page
     path('post/<int:pk>', PostDetailView.as_view(), name="show_post"), # individual post page
-    path('profile/<int:pk>/create_post', CreatePostView.as_view(), name="create_post")
+    path('profile/<int:pk>/create_post', CreatePostView.as_view(), name="create_post"), # create post page
+    path('profile/<int:pk>/update', UpdateProfileView.as_view(), name="update_profile") # update profile page
 ]

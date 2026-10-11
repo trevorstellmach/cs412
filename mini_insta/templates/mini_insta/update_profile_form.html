@@ -1,0 +1,18 @@
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+<h1>Update Article</h1>
+
+<form action="{% url 'update_profile' profile.pk %}" method="POST">
+    {% csrf_token %}
+    <table>{{form.as_table}}</table>
+
+    <input type="submit" name="submit" value="Submit">
+</form>
+<form action="{% url 'show_profile' profile.pk %}">
+    <input type="submit" value="Cancel">
+</form>
+
+
+
+{% endblock %}
