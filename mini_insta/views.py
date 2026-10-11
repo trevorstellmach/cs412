@@ -5,7 +5,7 @@
 from datetime import datetime
 
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse
 from .models import Profile, Post, Photo
 from .forms import CreatePostForm, UpdateProfileForm
@@ -86,3 +86,25 @@ class UpdateProfileView(UpdateView):
     model = Profile
     form_class = UpdateProfileForm
     template_name = 'mini_insta/update_profile_form.html'
+
+class DeletePostView(DeleteView):
+    """Subclass of DeleteView that deletes Posts"""
+
+    model = Post
+    template_name = 'mini_insta/delete_post_form.html'
+
+    def get_context_data(self, **kwargs):
+        "Return the dictionary of context variables for use in the template"
+
+        context = super().get_context_data()
+
+        post = self.object
+        profile = post.profile
+
+        context['profile'] = profile
+        context['post'] = post
+        return context
+
+    def get_success_url(self):
+        '''Provide a URL to redirect to after deleting a post'''
+        return reverse('show_profile', kwargs={'pk': self.object.profile.pk})

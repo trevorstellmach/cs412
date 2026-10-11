@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse
-from .models import Article
+from .models import Article, Comment
 from .forms import CreateArticleForm, CreateCommentForm, UpdateArticleForm
 import random
 
@@ -115,3 +115,18 @@ class UpdateArticleView(UpdateView):
     model = Article
     form_class = UpdateArticleForm
     template_name = 'blog/update_article_form.html'
+
+class DeleteCommentView(DeleteView):
+
+    model = Comment
+    template_name = 'blog/delete_comment_form.html'
+
+    def get_success_url(self):
+        # find pk
+        pk = self.kwargs['pk']
+
+        comment = Comment.objects.get(pk=pk)
+
+        article = comment.article
+
+        return reverse('article', kwargs={'pk': pk})
