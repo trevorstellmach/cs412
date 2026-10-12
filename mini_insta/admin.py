@@ -13,3 +13,6 @@ admin.site.register(Post)
 
 from .models import Photo
 admin.site.register(Photo)
+
+from .models import Follow
+admin.site.register(Follow)

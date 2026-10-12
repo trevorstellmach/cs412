@@ -30,6 +30,11 @@ class Profile(models.Model):
         """returns url back to profile page"""
         return reverse('show_profile', kwargs={'pk': self.pk})
 
+    def get_followers(self):
+        """returns a list of a given profile's followers"""
+
+        
+
 class Post(models.Model):
     """Defines Post model"""
 
@@ -86,3 +91,16 @@ class Photo(models.Model):
             return f'{self.post}, {self.image_file.url}, {self.timestamp}'
         else:
             return f'{self.post}, https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSKKzAcX4o85e8WqOLI80UB1H5sOOUlwW8XKy8EIxl3Q&s=10, {self.timestamp}'
+
+class Follow(models.Model):
+    """Defines Follow model"""
+
+    #attributes
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="profile")
+    follower_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="follower_profile")
+    timestamp = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        """String rep of the Follow model"""
+
+        return f'{self.follower_profile.display_name} follows {self.profile.display_name}'
