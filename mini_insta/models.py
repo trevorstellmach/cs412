@@ -53,6 +53,10 @@ class Post(models.Model):
         photo = Photo.objects.filter(post=self).first()
         return photo
 
+    def get_absolute_url(self):
+        """returns url back to post page"""
+        return reverse('show_post', kwargs={'pk': self.pk})
+
 
 class Photo(models.Model):
     """Defines Photo model"""

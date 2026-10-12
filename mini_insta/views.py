@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse
 from .models import Profile, Post, Photo
-from .forms import CreatePostForm, UpdateProfileForm
+from .forms import CreatePostForm, UpdateProfileForm, UpdatePostForm
 
 # Create your views here.
 class ProfileListView(ListView):
@@ -108,3 +108,10 @@ class DeletePostView(DeleteView):
     def get_success_url(self):
         '''Provide a URL to redirect to after deleting a post'''
         return reverse('show_profile', kwargs={'pk': self.object.profile.pk})
+
+class UpdatePostView(UpdateView):
+    """Subclass of UpdateView that updates posts"""
+
+    model = Post
+    form_class = UpdatePostForm
+    template_name = 'mini_insta/update_post_form.html'

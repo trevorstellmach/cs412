@@ -25,6 +25,11 @@
             <input type="submit" value="Delete">
         </form>
     </div>
+    <div class="update-form">
+        <form action="{% url 'update_post' post.pk %}" method="GET">
+            <input type="submit" value="Update">
+        </form>
+    </div>
 
 
 {% endblock %}

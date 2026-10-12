@@ -2,7 +2,7 @@
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
-<h1>Update Article</h1>
+<h1>Update Profile</h1>
 
 <form action="{% url 'update_profile' profile.pk %}" method="POST">
     {% csrf_token %}
