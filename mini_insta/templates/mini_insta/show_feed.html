@@ -3,34 +3,35 @@
 
 {% block content %}
 
-{% for post in profile.get_all_posts %}
+{% for feed_post in profile.get_post_feed %}
     <div class="grid profile-header">
 
         <div class="profile info">
+            <img src="{{feed_post.profile.profile_image_url}}" alt="">
             <div class="grid profile-names">
-                <h1>{{post.profile.display_name}}</h1>
-                <h3>@{{post.profile.username}}</h1>
+                <h1>{{feed_post.profile.display_name}}</h1>
+                <h3>@{{feed_post.profile.username}}</h1>
             </div>
         </div>
     </div>
     <div class="grid post-photos">
-        {% for photo in post.get_all_photos %}
-        <img src="{{ photo.get_image_url }}" alt="">
-        {% endfor %}
+
+        <img src="{{ feed_post.get_cover_photo.get_image_url }}" alt="">
+
     </div>
     <div class="grid post-info">
-        <p>{{post.timestamp}}</p>
-        <p>{{post.caption}}</p>
+        <p>{{feed_post.timestamp}}</p>
+        <p>{{feed_post.caption}}</p>
     </div>
     <div class="post-likes">
         Liked by
-        {% for like in post.get_likes %}
+        {% for like in feed_post.get_likes %}
         {{like.profile.username}},
         {% endfor %}
-        {{post.get_num_likes}} like(s)
+        {{feed_post.get_num_likes}} like(s)
     </div>
     <div class="post-comments">
-        {% for comment in post.get_all_comments %}
+        {% for comment in feed_post.get_all_comments %}
         <strong>@{{comment.profile.username}}</strong>
         {{comment.text}}
         <br>

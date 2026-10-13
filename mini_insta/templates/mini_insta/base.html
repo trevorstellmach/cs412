@@ -19,6 +19,11 @@
         <a href="{% url 'show_all_profiles' %}">Show All</a>
         {% if profile %}
         <a href="{% url 'create_post' profile.pk %}">Create Post</a>
+        <a href="{% url 'show_feed' profile.pk %}">Show Feed</a>
+        <!-- <a href="{% url 'show_profile' profile.pk %}">
+            <img src="{{profile.profile_image_url}}" alt="">
+        </a> -->
+        <a href="{% url 'show_profile' profile.pk %}">Show Profile</a>
         {% endif %}
     </footer>
  </html>
