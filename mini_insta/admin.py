@@ -16,3 +16,9 @@ admin.site.register(Photo)
 
 from .models import Follow
 admin.site.register(Follow)
+
+from .models import Comment
+admin.site.register(Comment)
+
+from .models import Like
+admin.site.register(Like)

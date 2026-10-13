@@ -20,6 +20,20 @@
         <p>{{post.timestamp}}</p>
         <p>{{post.caption}}</p>
     </div>
+    <div class="post-likes">
+        Liked by 
+        {% for like in post.get_likes %}
+            {{like.profile.username}}, 
+        {% endfor %}
+        {{post.get_num_likes}} like(s)
+    </div>
+    <div class="post-comments">
+        {% for comment in post.get_all_comments %}
+            <strong>@{{comment.profile.username}}</strong>
+            {{comment.text}}
+            <br>
+        {% endfor %}
+    </div>
     <div class="delete-form">
         <form action="{% url 'delete_post' post.pk %}" method="GET">
             <input type="submit" value="Delete">
