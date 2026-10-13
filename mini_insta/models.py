@@ -57,6 +57,21 @@ class Profile(models.Model):
         """returns number of following"""
         return len(self.get_following())
 
+    def get_post_feed(self):
+        """returns list of posts from accounts followed by given profile"""
+
+        following = Follow.objects.filter(follower_profile = self)
+        profiles = []
+        for x in following:
+            profiles += [x.profile]
+
+        posts = []
+        for x in profiles:
+            posts_temp = Post.objects.filter(profile = x)
+            for y in posts_temp:
+                posts += [y]
+
+        return posts
 
 class Post(models.Model):
     """Defines Post model"""
