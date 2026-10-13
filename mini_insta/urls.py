@@ -14,6 +14,8 @@ urlpatterns = [
     path('profile/<int:pk>/create_post', CreatePostView.as_view(), name="create_post"), # create post page
     path('profile/<int:pk>/update', UpdateProfileView.as_view(), name="update_profile"), # update profile page
     path('post/<int:pk>/delete', DeletePostView.as_view(), name="delete_post"), # delete post page
-    path('post/<int:pk>/update', UpdatePostView.as_view(), name="update_post") # update post page
+    path('post/<int:pk>/update', UpdatePostView.as_view(), name="update_post"), # update post page
+    path('profile/<int:pk>/followers', ShowFollowersDetailView.as_view(), name="show_followers"), # followers page
+    path('profile/<int:pk>/following', ShowFollowingDetailView.as_view(), name="show_following") # following page
 
 ]

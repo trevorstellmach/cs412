@@ -1,0 +1,12 @@
+<!-- mini_insta/show_followers.html -->
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+<h1>Followers</h1>
+
+{% for follower in profile.get_followers %}
+    <img src="{{follower.profile_image_url}}" alt="">
+{% endfor %}
+
+
+{% endblock %}

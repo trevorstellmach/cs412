@@ -32,8 +32,31 @@ class Profile(models.Model):
 
     def get_followers(self):
         """returns a list of a given profile's followers"""
+        followers = Follow.objects.filter(profile=self)
+        follower_accounts = []
+        for x in list(followers):
+            follower_accounts += [x.follower_profile]
 
-        
+        return follower_accounts
+
+    def get_num_followers(self):
+        """returns number of followers"""
+        num = self.get_followers()
+        return len(num)
+
+    def get_following(self):
+        """returns list of accounts self is following"""
+        following = Follow.objects.filter(follower_profile = self)
+        following_accounts = []
+        for x in following:
+            following_accounts += [x.profile]
+
+        return following_accounts
+
+    def get_num_following(self):
+        """returns number of following"""
+        return len(self.get_following())
+
 
 class Post(models.Model):
     """Defines Post model"""

@@ -1,0 +1,12 @@
+<!-- mini_insta/show_following.html -->
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+<h1>Following</h1>
+
+{% for following in profile.get_following %}
+<img src="{{following.profile_image_url}}" alt="">
+{% endfor %}
+
+
+{% endblock %}

@@ -115,3 +115,18 @@ class UpdatePostView(UpdateView):
     model = Post
     form_class = UpdatePostForm
     template_name = 'mini_insta/update_post_form.html'
+
+class ShowFollowersDetailView(DetailView):
+    """Subclass of DetailView that shows followers"""
+
+    model = Profile
+    template_name = 'mini_insta/show_followers.html'
+    context_object_name = 'profile'
+
+class ShowFollowingDetailView(DetailView):
+    """Subclass of DetailView that shows following"""
+
+    model = Profile
+    template_name = 'mini_insta/show_following.html'
+    context_object_name = 'profile'
+

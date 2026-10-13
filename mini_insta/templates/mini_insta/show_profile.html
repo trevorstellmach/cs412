@@ -21,10 +21,16 @@
                         <p>TBD</p>
                     </div>
                     <div class="profile-stats-item">
-                        <p>TBD</p>
+                        <strong>{{profile.get_num_followers}}</strong>
+                        <a href="{% url 'show_followers' profile.pk %}">
+                            <p>Followers</p>
+                        </a>
                     </div>
                     <div class="profile-stats-item">
-                        <p>TBD</p>
+                        <strong>{{profile.get_num_following}}</strong>
+                        <a href="{% url 'show_following' profile.pk %}">
+                            <p>Following</p>
+                        </a>
                     </div>
                 </div>
 
