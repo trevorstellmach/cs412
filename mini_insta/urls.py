@@ -18,5 +18,6 @@ urlpatterns = [
     path('profile/<int:pk>/followers', ShowFollowersDetailView.as_view(), name="show_followers"), # followers page
     path('profile/<int:pk>/following', ShowFollowingDetailView.as_view(), name="show_following"), # following page
     path('profile/<int:pk>/feed', ShowFeedView.as_view(), name="show_feed"), # feed page
+    path('profile/<int:pk>/search', SearchView.as_view(), name="show_search"), # search page
 
 ]

@@ -94,7 +94,7 @@ class DeletePostView(DeleteView):
     template_name = 'mini_insta/delete_post_form.html'
 
     def get_context_data(self, **kwargs):
-        "Return the dictionary of context variables for use in the template"
+        """Return the dictionary of context variables for use in the template"""
 
         context = super().get_context_data()
 
@@ -136,4 +136,53 @@ class ShowFeedView(DetailView):
     model = Profile
     template_name = 'mini_insta/show_feed.html'
     context_object_name = 'profile'
+
+class SearchView(ListView):
+    """Subclass of ListView that allows for searching posts and profiles"""
+
+    model = Profile
+    template_name = 'mini_insta/search_results.html'
+    context_object_name = 'profile'
+
+    def dispatch(self, request, *args, **kwargs):
+        """Handles dispatch for requests"""
+        print(self.request.GET)
+        if 'query' in self.request.GET:
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            pk = self.kwargs['pk']
+            profile = Profile.objects.get(pk=pk)
+            return render(request, template_name='mini_insta/search.html', context={'profile': profile})
+
+    def get_queryset(self):
+        """Returns data that matches passed in query"""
+
+        query = self.request.GET["query"]
+
+        result = Post.objects.filter(caption__contains=query)
+
+        return result
+
+    def get_context_data(self, **kwargs):
+        """Return the dictionary of context variables for use in the template"""
+
+        context = super().get_context_data()
+
+        query = self.request.GET["query"]
+
+        pk = self.kwargs['pk']
+        profile = Profile.objects.get(pk=pk)
+        context['profile'] = profile
+
+        context['query'] = query
+        context['posts'] = self.get_queryset()
+
+        profiles = Profile.objects.filter(username__contains=query) | Profile.objects.filter(display_name__contains=query) | Profile.objects.filter(bio_text__contains=query)
+        context['profiles'] = profiles
+
+        return context
+
+
+
+
 
