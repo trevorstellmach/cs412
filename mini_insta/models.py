@@ -57,6 +57,11 @@ class Profile(models.Model):
         """returns number of following"""
         return len(self.get_following())
 
+    def get_num_posts(self):
+        """returns number of posts"""
+
+        return len(self.get_all_posts())
+
     def get_post_feed(self):
         """returns list of posts from accounts followed by given profile"""
 

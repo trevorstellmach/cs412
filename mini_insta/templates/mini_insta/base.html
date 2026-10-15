@@ -8,7 +8,9 @@
     </head>
     <body>
         <header>
-            <div class="logo">Mini Insta</div>
+            <div class="logo">
+                <a href="{% url 'show_all_profiles' %}" style="text-decoration: none;">Mini Insta</a>
+            </div>
         </header>
 
         {% block content %}
