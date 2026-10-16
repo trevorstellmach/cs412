@@ -1,6 +1,6 @@
 # File: mini_insta/views.py
 # Author: Trevor Stellmach, tstell@bu.edu (09/26/26)
-# Description: mini_insta site views file
+# Description: defines view classes and logic for mini_insta
 
 from datetime import datetime
 
@@ -146,11 +146,10 @@ class SearchView(ListView):
 
     def dispatch(self, request, *args, **kwargs):
         """Handles dispatch for requests"""
-        print(self.request.GET)
-        if 'query' in self.request.GET:
+        if 'query' in self.request.GET:     # check if query is in the request
             return super().dispatch(request, *args, **kwargs)
         else:
-            pk = self.kwargs['pk']
+            pk = self.kwargs['pk']          # take to search page if not
             profile = Profile.objects.get(pk=pk)
             return render(request, template_name='mini_insta/search.html', context={'profile': profile})
 
@@ -159,7 +158,7 @@ class SearchView(ListView):
 
         query = self.request.GET["query"]
 
-        result = Post.objects.filter(caption__contains=query)
+        result = Post.objects.filter(caption__contains=query)   # get posts that contain the query in the caption
 
         return result
 
@@ -177,6 +176,7 @@ class SearchView(ListView):
         context['query'] = query
         context['posts'] = self.get_queryset()
 
+        # get profiles with the query in username, display name, or bio
         profiles = Profile.objects.filter(username__contains=query) | Profile.objects.filter(display_name__contains=query) | Profile.objects.filter(bio_text__contains=query)
         context['profiles'] = profiles
 

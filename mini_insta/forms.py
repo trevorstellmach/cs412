@@ -1,6 +1,6 @@
 # File: mini_insta/forms.py
 # Author: Trevor Stellmach, tstell@bu.edu (10/3/26)
-# Description: mini_insta site forms file
+# Description: defines form classes for mini_insta
 
 from django import forms
 from .models import *

@@ -1,6 +1,6 @@
 # File: mini_insta/models.py
 # Author: Trevor Stellmach, tstell@bu.edu (09/25/26)
-# Description: mini_insta site models file
+# Description: includes model classes and methods for mini_insta
 
 from django.db import models
 from django.urls import reverse
