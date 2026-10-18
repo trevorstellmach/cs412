@@ -34,6 +34,7 @@
             <br>
         {% endfor %}
     </div>
+    {% if profile.user == request.user %}
     <div class="delete-form">
         <form action="{% url 'delete_post' post.pk %}" method="GET">
             <input type="submit" value="Delete">
@@ -44,6 +45,7 @@
             <input type="submit" value="Update">
         </form>
     </div>
+    {% endif %}
 
 
 {% endblock %}

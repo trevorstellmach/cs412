@@ -6,6 +6,7 @@ from django.urls import path
 from django.conf import settings
 from . import views
 from .views import *
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', ProfileListView.as_view(), name="show_all_profiles"), # home page
@@ -19,5 +20,9 @@ urlpatterns = [
     path('profile/<int:pk>/following', ShowFollowingDetailView.as_view(), name="show_following"), # following page
     path('profile/<int:pk>/feed', ShowFeedView.as_view(), name="show_feed"), # feed page
     path('profile/<int:pk>/search', SearchView.as_view(), name="show_search"), # search page
+    path('login/', auth_views.LoginView.as_view(template_name='mini_insta/login.html'), name="login"), # login page
+    path('logout/', auth_views.LogoutView.as_view(next_page="logout_confirmation"), name="logout"), # logout page
+    path('logout_confirmation', LogoutConfirmationView.as_view(), name="logout_confirmation")
+
 
 ]

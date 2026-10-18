@@ -5,12 +5,17 @@
 from datetime import datetime
 
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.urls import reverse
 from .models import Profile, Post, Photo
 from .forms import CreatePostForm, UpdateProfileForm, UpdatePostForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
+class LogoutConfirmationView(TemplateView):
+    """Subclass of TemplateView to show logout confirmation"""
+    template_name = 'mini_insta/logged_out.html'
+
 class ProfileListView(ListView):
     """Subclass of ListView to show all profiles"""
 
@@ -32,11 +37,16 @@ class PostDetailView(DetailView):
     template_name = "mini_insta/show_post.html"
     context_object_name = "post"
 
-class CreatePostView(CreateView):
+class CreatePostView(LoginRequiredMixin, CreateView):
     """Subclass of CreateView to create a post"""
 
     form_class = CreatePostForm
     template_name = "mini_insta/create_post_form.html"
+
+    def get_login_url(self):
+        """returns URL for login page"""
+
+        return reverse('login')
 
     def get_context_data(self):
         "Return the dictionary of context variables for use in the template"
@@ -80,14 +90,14 @@ class CreatePostView(CreateView):
         # go to post after it's been created
         return reverse('show_post', kwargs={'pk': self.object.pk})
 
-class UpdateProfileView(UpdateView):
+class UpdateProfileView(LoginRequiredMixin, UpdateView):
     """Subclass of UpdateView that updates Profiles"""
 
     model = Profile
     form_class = UpdateProfileForm
     template_name = 'mini_insta/update_profile_form.html'
 
-class DeletePostView(DeleteView):
+class DeletePostView(LoginRequiredMixin, DeleteView):
     """Subclass of DeleteView that deletes Posts"""
 
     model = Post
@@ -109,7 +119,7 @@ class DeletePostView(DeleteView):
         '''Provide a URL to redirect to after deleting a post'''
         return reverse('show_profile', kwargs={'pk': self.object.profile.pk})
 
-class UpdatePostView(UpdateView):
+class UpdatePostView(LoginRequiredMixin, UpdateView):
     """Subclass of UpdateView that updates posts"""
 
     model = Post
@@ -130,14 +140,14 @@ class ShowFollowingDetailView(DetailView):
     template_name = 'mini_insta/show_following.html'
     context_object_name = 'profile'
 
-class ShowFeedView(DetailView):
+class ShowFeedView(LoginRequiredMixin, DetailView):
     """Subclass of DetailView that shows a user's Feed"""
 
     model = Profile
     template_name = 'mini_insta/show_feed.html'
     context_object_name = 'profile'
 
-class SearchView(ListView):
+class SearchView(LoginRequiredMixin, ListView):
     """Subclass of ListView that allows for searching posts and profiles"""
 
     model = Profile
