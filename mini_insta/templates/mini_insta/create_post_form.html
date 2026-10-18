@@ -3,7 +3,7 @@
 
 {% block content %}
 <h1>Create Post</h1>
-<form method="POST" action="{% url 'create_post' profile.pk %}" enctype="multipart/form-data">
+<form method="POST" action="{% url 'create_post' %}" enctype="multipart/form-data">
     {% csrf_token %}
     
     <div class="post-fields">

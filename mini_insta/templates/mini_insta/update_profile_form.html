@@ -4,7 +4,7 @@
 {% block content %}
 <h1>Update Profile</h1>
 
-<form action="{% url 'update_profile' profile.pk %}" method="POST">
+<form action="{% url 'update_profile' %}" method="POST">
     {% csrf_token %}
     <table>{{form.as_table}}</table>
 

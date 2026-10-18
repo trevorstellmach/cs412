@@ -10,4 +10,9 @@
     {{form}}
     <input type="hidden" name="next" value="{% url 'show_all_profiles' %}">
     <input type="submit" value="Login">
+    {% if request.GET.next %}
+    <input type="hidden" name="next" value="{{request.GET.next}}">
+    {% else %}
+    <input type="hidden" name="next" value="{% url 'show_all_profiles' %}">
+    {% endif %}
 {% endblock %}

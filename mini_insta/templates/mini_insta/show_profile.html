@@ -41,7 +41,7 @@
         <p>{{profile.bio_text | linebreaksbr}}</p>
         <p>{{profile.join_date}}</p>
         {% if profile.user == request.user %}
-        <a href="{% url 'update_profile' profile.pk %}">
+        <a href="{% url 'update_profile' %}">
             Update Profile
         </a>
         {% endif %}
