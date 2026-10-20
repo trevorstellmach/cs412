@@ -8,8 +8,10 @@ from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.urls import reverse
 from .models import Profile, Post, Photo
-from .forms import CreatePostForm, UpdateProfileForm, UpdatePostForm
+from .forms import CreatePostForm, UpdateProfileForm, UpdatePostForm, CreateProfileForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
 
 # Create your views here.
 class LogoutConfirmationView(TemplateView):
@@ -236,5 +238,44 @@ class SearchView(LoginRequiredMixin, ListView):
 
         return context
 
+class CreateProfileView(CreateView):
+    """Subclass of CreateView that shows/processes registration form to make a new user"""
 
+    template_name = 'mini_insta/create_profile_form.html'
+    form_class = CreateProfileForm
+    model = Profile
+
+    def get_success_url(self):
+        """URL to redirect to after making an account"""
+        return reverse('login')
+
+    def get_context_data(self, **kwargs):
+        """returns dictionary of context data for use in template"""
+
+        context = super().get_context_data()
+        context['user_creation_form'] = UserCreationForm()
+
+        return context
+
+    def form_valid(self, form):
+        """handles form submission"""
+
+        print("LOOK HERE", self.request.POST)
+
+        # rebuild user_creation_form
+        user_form = UserCreationForm(self.request.POST)
+
+        if user_form.is_valid():
+            # create User object
+            user = user_form.save()
+            form.instance.user = user
+
+            # log in user
+            login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
+
+        response = super().form_valid(form)
+
+        return response
+
+        
 
