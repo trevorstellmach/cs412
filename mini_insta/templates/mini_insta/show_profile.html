@@ -44,6 +44,18 @@
         <a href="{% url 'update_profile' %}">
             Update Profile
         </a>
+        {% else %}
+            {% if request.user.profile not in profile.get_followers %}
+            <form action="{% url 'follow' profile.pk %}" method="POST">
+                {% csrf_token %}
+                <input type="submit" value="Follow">
+            </form>
+            {% else %}
+            <form action="{% url 'delete_follow' profile.pk %}" method="POST">
+                {% csrf_token %}
+                <input type="submit" value="Unfollow">
+            </form>
+            {% endif %}
         {% endif %}
         <h2>Posts</h2>
         <div class="grid posts">

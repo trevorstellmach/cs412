@@ -7,11 +7,12 @@ from datetime import datetime
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.urls import reverse
-from .models import Profile, Post, Photo
+from .models import Profile, Post, Photo, Follow, Like
 from .forms import CreatePostForm, UpdateProfileForm, UpdatePostForm, CreateProfileForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
+from django.shortcuts import redirect
 
 # Create your views here.
 class LogoutConfirmationView(TemplateView):
@@ -31,6 +32,7 @@ class ProfileDetailView(DetailView):
     model = Profile
     template_name = "mini_insta/show_profile.html"
     context_object_name = "profile"
+
 
 class LoggedInProfileView(LoginRequiredMixin, DetailView):
     """Subclass of DetailView to show profile of logged in user"""
@@ -277,5 +279,39 @@ class CreateProfileView(CreateView):
 
         return response
 
-        
+class CreateFollowView(TemplateView):
+    """handles logic behind following an account"""
+
+    def dispatch(self, request, *args, **kwargs):
+        """overriding dispatch to create follow object"""
+
+        pk = self.kwargs.get("pk")
+        prof = Profile.objects.get(pk=pk)
+
+        current_user = self.request.user
+
+        Follow.objects.create(
+            profile = prof,
+            follower_profile = Profile.objects.get(user=current_user)
+        )
+
+        return redirect('show_profile', pk=pk)
+
+class DeleteFollowView(TemplateView):
+    """handles logic behind unfollowing an account"""
+
+    def dispatch(self, request, *args, **kwargs):
+        """overriding dispatch to delete follow object"""
+
+        pk = self.kwargs.get("pk")
+        prof = Profile.objects.get(pk=pk)
+
+        user = self.request.user
+        follower_prof = user.profile
+
+
+        follow = Follow.objects.get(profile=prof, follower_profile=follower_prof)
+        follow.delete()
+
+        return redirect('show_profile', pk=pk)
 
