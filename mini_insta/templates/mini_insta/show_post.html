@@ -21,16 +21,18 @@
         <p>{{post.caption}}</p>
     </div>
     <div class="post-likes">
-        {% if request.user not in post.get_likes %}
-        <form action="{% url 'like' post.pk %}" method="POST">
-            {% csrf_token %}
-            <input type="submit" value="Like">
-        </form>
-        {% else %}
-        <form action="{% url 'delete_like' post.pk %}" method="POST">
-            {% csrf_token %}
-            <input type="submit" value="Remove Like">
-        </form>
+        {% if post.profile.user != request.user %}
+            {% if request.user.profile not in post.get_likes_profiles %}
+            <form action="{% url 'like' post.pk %}" method="POST">
+                {% csrf_token %}
+                <input type="submit" value="Like">
+            </form>
+            {% else %}
+            <form action="{% url 'delete_like' post.pk %}" method="POST">
+                {% csrf_token %}
+                <input type="submit" value="Remove Like">
+            </form>
+            {% endif %}
         {% endif %}
         Liked by 
         {% for like in post.get_likes %}

@@ -27,8 +27,8 @@ urlpatterns = [
     path('create_profile/', CreateProfileView.as_view(), name="create_profile"), # user registration page
     path('profile/<int:pk>/follow', CreateFollowView.as_view(), name="follow"), # follow
     path('profile/<int:pk>/delete_follow', DeleteFollowView.as_view(), name="delete_follow"), # unfollow
-    # path('post/<int:pk>/like', CreateLikeView.as_view(), name="like"), # like
-    # path('post/<int:pk>/delete_like', DeleteLikeView.as_view(), name="delete_like") # remove like
+    path('post/<int:pk>/like', CreateLikeView.as_view(), name="like"), # like
+    path('post/<int:pk>/delete_like', DeleteLikeView.as_view(), name="delete_like") # remove like
 
 
 ]

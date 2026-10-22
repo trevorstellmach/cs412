@@ -315,3 +315,38 @@ class DeleteFollowView(TemplateView):
 
         return redirect('show_profile', pk=pk)
 
+class CreateLikeView(TemplateView):
+    """handles logic behind liking a post"""
+
+    def dispatch(self, request, *args, **kwargs):
+        """overriding dispatch to create like object"""
+
+        pk = self.kwargs.get("pk")
+        post = Post.objects.get(pk=pk)
+
+        current_user = self.request.user
+
+        Like.objects.create(
+            profile = Profile.objects.get(user=current_user),
+            post = post
+        )
+
+        return redirect('show_post', pk=pk)
+
+class DeleteLikeView(TemplateView):
+    """handles logic behind removing a like from a post"""
+
+    def dispatch(self, request, *args, **kwargs):
+        """overriding dispatch to delete like object"""
+
+        pk = self.kwargs.get("pk")
+        post = Post.objects.get(pk=pk)
+
+        user = self.request.user
+        prof = user.profile
+
+
+        like = Like.objects.get(profile=prof, post=post)
+        like.delete()
+
+        return redirect('show_post', pk=pk)

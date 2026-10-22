@@ -112,6 +112,16 @@ class Post(models.Model):
         """returns like display for post page"""
         return len(self.get_likes())
 
+    def get_likes_profiles(self):
+        """returns profiles that have liked a given post"""
+        likes = self.get_likes()
+        likes_profiles = []
+        for x in likes:
+            likes_profiles += [x.profile]
+
+        return likes_profiles
+
+
     def get_cover_photo(self):
         """returns photo to be used for posts grid"""
 
