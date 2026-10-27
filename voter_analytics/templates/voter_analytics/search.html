@@ -1,0 +1,62 @@
+<!-- voter_analytics/templates/voter_analytics/search.html -->
+<h1>Search Form</h1>
+
+<table>
+    <form action="{% url 'voters' %}">
+
+        <tr>
+            <th>Party:</th>
+            <td><select name="party" id="party">
+                {% for party in parties %}
+                <option value="{{party}}">{{party}}</option>
+                {% endfor %}
+            </select></td>
+        </tr>
+
+        <tr>
+            <th>Voter Score:</th>
+            <td><select name="score" id="score">
+                    <option value="5">5</option>
+                    <option value="4">4</option>
+                    <option value="3">3</option>
+                    <option value="2">2</option>
+                    <option value="1">1</option>
+                    <option value="0">0</option>
+                </select></td>
+        </tr>
+
+        <tr>
+            <th>Minimum Year of Birth:</th>
+            <td><select name="min_dob" id="min_dob">
+                    {% for year in years %}
+                        <option value="{{year}}">{{year}}</option>
+                    {% endfor %}
+                </select></td>
+        </tr>
+
+        <tr>
+            <th>Maximum Year of Birth:</th>
+            <td><select name="max_dob" id="max_dob">
+                    {% for year in years %}
+                    <option value="{{year}}">{{year}}</option>
+                    {% endfor %}
+                </select></td>
+        </tr>
+
+        <tr>
+            <th>Previous Election Participation:</th>
+            {% for election in elections %}
+            <td><input type="checkbox" name="{{election}}" id="{{election}}">
+                <label for="{{election}}">{{election}}</label></td>
+            {% endfor %}
+        </tr>
+
+
+
+        <tr>
+            <td><input type="submit"></td>
+            <td></td>
+        </tr>
+
+    </form>
+</table>

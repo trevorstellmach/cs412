@@ -7,6 +7,8 @@ from django.db import models
 def load_data():
     """loads data from CSV into Django database"""
 
+    Voter.objects.all().delete()
+
     filename = '/Users/trevorstellmach/Downloads/newton_voters.csv'
     f = open(filename, 'r')
     f.readline() # discard headers
@@ -16,12 +18,15 @@ def load_data():
         fields = row.split(',')
 
         try:
+            print(fields[5])
+            if fields[5] != "":
+                apt_num = ", Apartment " + fields[5] + ","
+            else:
+                apt_num = ","
             voter = Voter(
                 first_name=fields[1],
                 last_name=fields[2],
-                street_number=fields[3],
-                street_name=fields[4],
-                apartment_number=fields[5],
+                address=fields[3] + " " + fields[4] + apt_num + " Newton, MA",
                 zip_code=fields[6],
                 date_of_birth=fields[7],
                 date_of_registration=fields[8],
@@ -32,7 +37,7 @@ def load_data():
                 v21primary=(fields[13].strip().upper() == 'TRUE'),
                 v22general=(fields[14].strip().upper() == 'TRUE'),
                 v23town=(fields[15].strip().upper() == 'TRUE'),
-                voter_score=int(fields[16])
+                voter_score=int(fields[16]),
             )
 
             voter.save()
@@ -46,9 +51,7 @@ class Voter(models.Model):
 
     last_name = models.TextField()
     first_name = models.TextField()
-    street_number = models.TextField()
-    street_name = models.TextField()
-    apartment_number = models.TextField(blank=True)
+    address = models.TextField()
     zip_code = models.TextField()
     date_of_birth = models.DateField()
     date_of_registration = models.DateField()
