@@ -12,7 +12,7 @@
         <ul class="pagination">
             {% if page_obj.has_previous %}
             <li>
-                <span><a href="?page={{ page_obj.previous_page_number }}">Previous</a></span>
+                <span><a href="?{{query_string}}&page={{ page_obj.previous_page_number }}">Previous</a></span>
             </li>
             {% endif %}
             <li class="">
@@ -20,7 +20,7 @@
             </li>
             {% if page_obj.has_next %}
             <li>
-                <span><a href="?page={{ page_obj.next_page_number }}">Next</a></span>
+                <span><a href="?{{query_string}}&page={{ page_obj.next_page_number }}">Next</a></span>
             </li>
             {% endif %}
         </ul>
@@ -30,7 +30,7 @@
     <h1>Voters</h1>
 
     <div class="row">
-        {% include "voter_analytics/search.html" %}
+        {% include "voter_analytics/filter.html" %}
     </div>
     <div class="row">
         <table>

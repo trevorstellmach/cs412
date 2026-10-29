@@ -12,7 +12,7 @@ import plotly
 import plotly.graph_objs as go
 
 # eligible birth years
-YEARS = range(1920, 2005)
+YEARS = [str(x) for x in range(1920, 2005)]
 
 # list of potential parties
 PARTIES = [
@@ -20,6 +20,9 @@ PARTIES = [
     "FF", "G ", "HH", "T ", "AA", "GG", "Z ", "O ", "P ", "E ",
     "V ", "H ", "Y ", "W ", "EE", "K "
 ]
+
+# list of voter scores
+SCORES = ['0', '1', '2', '3', '4', '5']
 
 # list of previous elections
 PREV_ELECTIONS = ["v20state", "v21town", "v21primary", "v22general", "v23town"]
@@ -90,6 +93,7 @@ class VotersListView(ListView):
         context['years'] = YEARS
         context['parties'] = PARTIES
         context['elections'] = PREV_ELECTIONS
+        context['scores'] = SCORES
 
         # add previous input to context data
         context["selected_party"] = self.request.GET.get("party")
@@ -97,7 +101,10 @@ class VotersListView(ListView):
         context["selected_min_dob"] = self.request.GET.get("min_dob")
         context["selected_max_dob"] = self.request.GET.get("max_dob")
 
-        print("CONTEXT", context["selected_party"])
+        # allows filters to hold across pages
+        params = self.request.GET.copy()
+        params.pop("page", None)
+        context["query_string"] = params.urlencode()
 
         return context
 
@@ -181,6 +188,7 @@ class GraphListView(ListView):
         context['years'] = YEARS
         context['parties'] = PARTIES
         context['elections'] = PREV_ELECTIONS
+        context['scores'] = SCORES
 
         # add previous input to context data
         context["selected_party"] = self.request.GET.get("party")

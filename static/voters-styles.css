@@ -1,0 +1,461 @@
+/* voter_analytics/static/voter-styles.css
+   Styles for the Voter Analytics templates. Targets the existing markup only:
+   header/nav, .container/.row, ul.pagination, the filter table (the one with
+   <select>s), the voters data table, the voter detail table, and Plotly charts.
+*/
+
+@import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap");
+
+:root {
+    --page: #edf0f3;
+    --surface: #ffffff;
+    --ink: #16212e;
+    --muted: #5b6675;
+    --line: #d5dae1;
+    --line-strong: #b5bdc8;
+    --petrol: #0c3844;
+    --petrol-mid: #0f4c5c;
+    --teal: #2f7f91;
+    --amber: #e09f3e;
+    --brick: #c8553d;
+    --tint: #e3f0f3;
+    --radius: 8px;
+    --width: 76rem;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding-bottom: 4rem;
+    background: var(--page);
+    color: var(--ink);
+    font-family: "Public Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5;
+    font-variant-numeric: tabular-nums;
+}
+
+a {
+    color: var(--petrol-mid);
+    text-underline-offset: 0.2em;
+}
+
+a:hover {
+    color: var(--ink);
+    text-decoration-color: var(--amber);
+    text-decoration-thickness: 2px;
+}
+
+:focus-visible {
+    outline: 3px solid var(--amber);
+    outline-offset: 2px;
+}
+
+
+/* ---------- Header and navigation ---------- */
+
+body>header {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0 2rem;
+    padding: 1.75rem max(1.5rem, calc((100% - var(--width)) / 2)) 6px;
+    background: var(--petrol);
+    color: #fff;
+}
+
+/* segmented bar along the bottom edge, like a stacked distribution chart */
+body>header::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 6px;
+    background: linear-gradient(90deg,
+            var(--teal) 0 34%,
+            var(--amber) 34% 52%,
+            var(--brick) 52% 64%,
+            #8fb0bd 64% 86%,
+            #f0e4c8 86% 100%);
+}
+
+body>header h1 {
+    margin: 0;
+    padding-bottom: 0.6rem;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+}
+
+header nav ul {
+    display: flex;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+header nav a {
+    display: block;
+    padding: 0.65rem 1rem;
+    border-bottom: 3px solid transparent;
+    color: rgba(255, 255, 255, 0.82);
+    font-weight: 500;
+    text-decoration: none;
+    transition: border-color 0.15s, color 0.15s;
+}
+
+header nav a:hover {
+    border-bottom-color: var(--amber);
+    color: #fff;
+}
+
+
+/* ---------- Layout ---------- */
+
+.container {
+    width: min(var(--width), calc(100% - 3rem));
+    margin-inline: auto;
+}
+
+.row+.row {
+    margin-top: 1.5rem;
+}
+
+.container>h1 {
+    margin: 2rem 0 0.75rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+}
+
+/* small heading above the filter panel */
+.row>h1 {
+    margin: 1.5rem 0 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--muted);
+}
+
+
+/* ---------- Pagination ---------- */
+
+.pagination {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.pagination span {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.pagination a {
+    display: inline-block;
+    padding: 0.3rem 0.85rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--petrol-mid);
+    font-weight: 500;
+    text-decoration: none;
+    transition: border-color 0.15s;
+}
+
+.pagination a:hover {
+    border-color: var(--petrol-mid);
+}
+
+
+/* ---------- Filter panel (the table that contains the <select>s) ---------- */
+
+table:has(select) {
+    display: block;
+    margin: 0.5rem 0 1.5rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+}
+
+/* on the graphs page the filter table sits directly in <body> */
+body>table:has(select) {
+    width: min(var(--width), calc(100% - 3rem));
+    margin: 1.5rem auto;
+}
+
+table:has(select) tbody {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 1.1rem 1.5rem;
+    align-items: end;
+}
+
+table:has(select) tr {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+table:has(select) th {
+    text-align: left;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--muted);
+}
+
+table:has(select) td {
+    padding: 0;
+}
+
+table:has(select) td:empty {
+    display: none;
+}
+
+select {
+    width: 100%;
+    padding: 0.5rem 0.65rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+}
+
+select:hover {
+    border-color: var(--petrol-mid);
+}
+
+/* election participation: label on its own line, checkboxes as chips */
+table:has(select) tr:has(input[type="checkbox"]) {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    order: 1;
+}
+
+table:has(select) tr:has(input[type="checkbox"]) th {
+    flex: 0 0 100%;
+}
+
+table:has(select) tr:has(input[type="checkbox"]) td {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    background: var(--surface);
+}
+
+table:has(select) tr:has(input[type="checkbox"]) td:has(input:checked) {
+    border-color: var(--petrol-mid);
+    background: var(--tint);
+}
+
+input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+    margin: 0;
+    accent-color: var(--petrol-mid);
+}
+
+label {
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+table:has(select) tr:has(input[type="submit"]) {
+    grid-column: 1 / -1;
+    order: 2;
+}
+
+input[type="submit"] {
+    padding: 0.55rem 1.5rem;
+    border: 0;
+    border-radius: 6px;
+    background: var(--petrol-mid);
+    color: #fff;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+input[type="submit"]:hover {
+    background: var(--petrol);
+}
+
+
+/* ---------- Voters list (data table) ---------- */
+
+.row>table:not(:has(select)) {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+}
+
+.row>table:not(:has(select)) th {
+    position: sticky;
+    top: 0;
+    padding: 0.75rem 1rem;
+    background: #f4f6f8;
+    border-bottom: 1px solid var(--line-strong);
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: left;
+}
+
+.row>table:not(:has(select)) td {
+    padding: 0.65rem 1rem;
+    border-bottom: 1px solid var(--line);
+}
+
+.row>table:not(:has(select)) tr:hover td {
+    background: #f6fafb;
+}
+
+/* score column is numeric */
+.row>table:not(:has(select)) th:last-child,
+.row>table:not(:has(select)) td:last-child {
+    text-align: right;
+}
+
+/* keep the rounded outline clean */
+.row>table:not(:has(select)) tr:first-child th:first-child {
+    border-top-left-radius: calc(var(--radius) - 1px);
+}
+
+.row>table:not(:has(select)) tr:first-child th:last-child {
+    border-top-right-radius: calc(var(--radius) - 1px);
+}
+
+.row>table:not(:has(select)) tr:last-child td {
+    border-bottom: 0;
+}
+
+.row>table:not(:has(select)) tr:last-child td:first-child {
+    border-bottom-left-radius: calc(var(--radius) - 1px);
+}
+
+.row>table:not(:has(select)) tr:last-child td:last-child {
+    border-bottom-right-radius: calc(var(--radius) - 1px);
+}
+
+
+/* ---------- Voter detail (14-column table shown as label / value pairs) ---------- */
+
+.container>table {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(14, auto);
+    grid-template-columns: minmax(11rem, max-content) 1fr;
+    margin: 0 0 2rem;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+}
+
+.container>table tbody,
+.container>table tr {
+    display: contents;
+}
+
+.container>table th,
+.container>table td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+}
+
+.container>table th {
+    background: #f4f6f8;
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.container>table th:last-child,
+.container>table td:last-child {
+    border-bottom: 0;
+}
+
+
+/* ---------- Charts (Plotly output sits in <p> inside .row) ---------- */
+
+/* The template wraps each chart in <p>, but a <div> can't sit inside a <p>, so the
+   browser closes the <p> early and leaves empty <p> elements around the chart.
+   Hide those, and put the panel styling on the chart's own wrapper <div>. */
+.row>p:empty {
+    display: none;
+}
+
+.row>div {
+    margin: 0 0 1.5rem;
+    padding: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+}
+
+.row>div .plotly-graph-div {
+    width: 100%;
+}
+
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 40rem) {
+    body>header {
+        padding-top: 1.25rem;
+    }
+
+    body>header h1 {
+        font-size: 1.5rem;
+    }
+
+    header nav {
+        width: 100%;
+    }
+
+    table:has(select) {
+        padding: 1rem;
+    }
+
+    .container>table {
+        grid-template-columns: minmax(7rem, max-content) 1fr;
+    }
+
+    .row>table:not(:has(select)) th,
+    .row>table:not(:has(select)) td {
+        padding: 0.55rem 0.6rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
+}

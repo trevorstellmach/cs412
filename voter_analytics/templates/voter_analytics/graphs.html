@@ -33,9 +33,9 @@
         <tr>
             <th>Party:</th>
             <td><select name="party" id="party">
-                    <option value selected disabled hidden>Choose</option>
+                    <option value selected hidden>Choose</option>
                     {% for party in parties %}
-                    <option value="{{party}}">
+                    <option value="{{party}}" {% if party == selected_party %}selected{% endif %}>
                         {{party}}
                     </option>
                     {% endfor %}
@@ -45,22 +45,19 @@
         <tr>
             <th>Voter Score:</th>
             <td><select name="score" id="score">
-                    <option value selected disabled hidden>Choose</option>
-                    <option value="5">5</option>
-                    <option value="4">4</option>
-                    <option value="3">3</option>
-                    <option value="2">2</option>
-                    <option value="1">1</option>
-                    <option value="0">0</option>
+                    <option value selected hidden>Choose</option>
+                    {% for score in scores %}
+                    <option value="{{score}}" {% if score == selected_voter_score %}selected{% endif %}>{{score}}</option>
+                    {% endfor %}
                 </select></td>
         </tr>
 
         <tr>
             <th>Minimum Year of Birth:</th>
             <td><select name="min_dob" id="min_dob">
-                    <option value selected disabled hidden>Choose</option>
+                    <option value selected hidden>Choose</option>
                     {% for year in years %}
-                    <option value="{{year}}">{{year}}</option>
+                    <option value="{{year}}" {% if year == selected_min_dob %}selected{% endif %}>{{year}}</option>
                     {% endfor %}
                 </select></td>
         </tr>
@@ -68,9 +65,9 @@
         <tr>
             <th>Maximum Year of Birth:</th>
             <td><select name="max_dob" id="max_dob">
-                    <option value selected disabled hidden>Choose</option>
+                    <option value selected hidden>Choose</option>
                     {% for year in years %}
-                    <option value="{{year}}">{{year}}</option>
+                    <option value="{{year}}" {% if year == selected_max_dob %}selected{% endif %}>{{year}}</option>
                     {% endfor %}
                 </select></td>
         </tr>
@@ -78,7 +75,7 @@
         <tr>
             <th>Previous Election Participation:</th>
             {% for election in elections %}
-            <td><input type="checkbox" name="{{election}}" id="{{election}}">
+            <td><input type="checkbox" name="{{election}}" id="{{election}}" {% if election in request.GET %}checked{% endif %}>
                 <label for="{{election}}">{{election}}</label>
             </td>
             {% endfor %}
