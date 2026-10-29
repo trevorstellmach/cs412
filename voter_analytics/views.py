@@ -4,7 +4,7 @@
 
 from django.db.models.query import QuerySet
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from datetime import date
 from . models import Voter
 
@@ -87,6 +87,26 @@ class VotersListView(ListView):
         context['parties'] = PARTIES
         context['elections'] = PREV_ELECTIONS
 
+        context["selected_party"] = self.request.GET.get("party")
+        context["selected_voter_score"] = self.request.GET.get("score")
+        context["selected_min_dob"] = self.request.GET.get("min_dob")
+        context["selected_max_dob"] = self.request.GET.get("max_dob")
+
+        print("CONTEXT", context["selected_party"])
+
         return context
 
 
+class VoterDetailView(DetailView):
+    """view to display single Voter object"""
+
+    model = Voter
+    template_name = "voter_analytics/voter_detail.html"
+    context_object_name = 'v'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['map_url'] = "https://www.google.com/maps/place/" + self.object.street_number + "+" + self.object.street_name + "+Newton, MA"
+
+        return context

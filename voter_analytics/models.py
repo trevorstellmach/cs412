@@ -18,15 +18,12 @@ def load_data():
         fields = row.split(',')
 
         try:
-            print(fields[5])
-            if fields[5] != "":
-                apt_num = ", Apartment " + fields[5] + ","
-            else:
-                apt_num = ","
             voter = Voter(
                 first_name=fields[1],
                 last_name=fields[2],
-                address=fields[3] + " " + fields[4] + apt_num + " Newton, MA",
+                street_number=fields[3],
+                street_name=fields[4],
+                apt_number=fields[5],
                 zip_code=fields[6],
                 date_of_birth=fields[7],
                 date_of_registration=fields[8],
@@ -51,7 +48,9 @@ class Voter(models.Model):
 
     last_name = models.TextField()
     first_name = models.TextField()
-    address = models.TextField()
+    street_number = models.TextField()
+    street_name = models.TextField()
+    apt_number = models.TextField()
     zip_code = models.TextField()
     date_of_birth = models.DateField()
     date_of_registration = models.DateField()
