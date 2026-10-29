@@ -1,0 +1,120 @@
+<!-- voter_analytics/templates/voter_analytics/graphs.html -->
+
+{% extends 'voter_analytics/base.html' %}
+
+
+{% block content %}
+<div class="container">
+
+    <!-- navigation links for different pages of results -->
+    <div class="row">
+        {% if is_paginated %}
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+            <li>
+                <span><a href="?page={{ page_obj.previous_page_number }}">Previous</a></span>
+            </li>
+            {% endif %}
+            <li class="">
+                <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
+            </li>
+            {% if page_obj.has_next %}
+            <li>
+                <span><a href="?page={{ page_obj.next_page_number }}">Next</a></span>
+            </li>
+            {% endif %}
+        </ul>
+        {% endif %}
+    </div>
+</div>
+<table>
+    <form action="{% url 'graphs' %}">
+
+        <tr>
+            <th>Party:</th>
+            <td><select name="party" id="party">
+                    <option value selected disabled hidden>Choose</option>
+                    {% for party in parties %}
+                    <option value="{{party}}">
+                        {{party}}
+                    </option>
+                    {% endfor %}
+                </select></td>
+        </tr>
+
+        <tr>
+            <th>Voter Score:</th>
+            <td><select name="score" id="score">
+                    <option value selected disabled hidden>Choose</option>
+                    <option value="5">5</option>
+                    <option value="4">4</option>
+                    <option value="3">3</option>
+                    <option value="2">2</option>
+                    <option value="1">1</option>
+                    <option value="0">0</option>
+                </select></td>
+        </tr>
+
+        <tr>
+            <th>Minimum Year of Birth:</th>
+            <td><select name="min_dob" id="min_dob">
+                    <option value selected disabled hidden>Choose</option>
+                    {% for year in years %}
+                    <option value="{{year}}">{{year}}</option>
+                    {% endfor %}
+                </select></td>
+        </tr>
+
+        <tr>
+            <th>Maximum Year of Birth:</th>
+            <td><select name="max_dob" id="max_dob">
+                    <option value selected disabled hidden>Choose</option>
+                    {% for year in years %}
+                    <option value="{{year}}">{{year}}</option>
+                    {% endfor %}
+                </select></td>
+        </tr>
+
+        <tr>
+            <th>Previous Election Participation:</th>
+            {% for election in elections %}
+            <td><input type="checkbox" name="{{election}}" id="{{election}}">
+                <label for="{{election}}">{{election}}</label>
+            </td>
+            {% endfor %}
+        </tr>
+
+
+
+        <tr>
+            <td><input type="submit"></td>
+            <td></td>
+        </tr>
+
+    </form>
+</table>
+<div class="container">
+    <div class="row">
+        <p>
+            {{graph_div_years|safe}}
+        </p>
+    </div>
+
+</div>
+<div class="container">
+    <div class="row">
+        <p>
+            {{graph_div_party|safe}}
+        </p>
+    </div>
+
+</div>
+<div class="container">
+    <div class="row">
+        <p>
+            {{graph_div_election|safe}}
+        </p>
+    </div>
+
+</div>
+{% endblock %}
