@@ -11,5 +11,8 @@ urlpatterns = [
     path('article/create', CreateArticleView.as_view(), name="create_article"),
     path('article/<int:pk>/create_comment', CreateCommentView.as_view(), name='create_comment'),
     path('article/<int:pk>/update', UpdateView.as_view(), name='update_article'),
-    path('comment/<int:pk>/delete', DeleteCommentView.as_view(), name='delete_comment')
+    path('comment/<int:pk>/delete', DeleteCommentView.as_view(), name='delete_comment'),
+
+    ## API Paths:
+    path(r'api/articles/', ArticleListAPIView.as_view())
 ]

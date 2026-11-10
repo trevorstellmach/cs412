@@ -1,0 +1,12 @@
+<!-- dadjokes/all_pictures.html -->
+
+<html>
+
+<body>
+    <h1>All Pictures</h1>
+    {% for p in pictures %}
+    <img src="{{p.image_url}}">
+    {% endfor %}
+</body>
+
+</html>

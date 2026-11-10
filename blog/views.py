@@ -130,3 +130,15 @@ class DeleteCommentView(DeleteView):
         article = comment.article
 
         return reverse('article', kwargs={'pk': pk})
+
+# REST API VIEWS ################################################################
+
+from rest_framework import generics
+from .serializers import *
+
+class ArticleListAPIView(generics.ListCreateAPIView):
+    """API View to return list of Articles, and to create one new Article"""
+
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
+    
