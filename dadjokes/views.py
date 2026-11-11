@@ -18,9 +18,9 @@ class ShowRandomJokeView(TemplateView):
         """override context data"""
         context = super().get_context_data(**kwargs)
 
-        pks = Joke.objects.values_list('pk', flat=True)
-        pk = random.choice(pks)
-        context["joke"] = Joke.objects.get(pk=pk)
+        joke_pks = Joke.objects.values_list('pk', flat=True)
+        joke_pk = random.choice(joke_pks)
+        context["joke"] = Joke.objects.get(pk=joke_pk)
 
         pks = Picture.objects.values_list('pk', flat=True)
         pk = random.choice(pks)
@@ -69,3 +69,53 @@ class ShowPictureView(DetailView):
         context["picture"] = Picture.objects.get(pk=pk)
 
         return context
+
+
+# API VIEWS #######################################################
+
+from rest_framework import generics
+from .serializers import *
+
+class RandomJokeAPIView(generics.RetrieveAPIView):
+    """API view to return a random joke"""
+
+    queryset = Joke.objects.all()
+    serializer_class = JokeSerializer
+
+    def get_object(self):
+        queryset = Joke.objects.all()
+        return queryset[random.randrange(len(queryset))]
+
+class RandomPictureDetailAPIView(generics.RetrieveAPIView):
+    """API view to return a random picture"""
+
+    queryset = Picture.objects.all()
+    serializer_class = PictureSerializer
+
+    def get_object(self):
+        queryset = Picture.objects.all()
+        return queryset[random.randrange(len(queryset))]
+
+class JokeListAPIView(generics.ListCreateAPIView):
+    """API view to return a list of all jokes"""
+
+    queryset = Joke.objects.all()
+    serializer_class = JokeSerializer
+
+class PictureListAPIView(generics.ListCreateAPIView):
+    """API view to return a list of all pictures"""
+
+    queryset = Picture.objects.all()
+    serializer_class = PictureSerializer
+
+class JokeDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    """API view to return a specific joke"""
+
+    queryset = Joke.objects.all()
+    serializer_class = JokeSerializer
+
+class PictureDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    """API view to return a specific picture"""
+
+    queryset = Picture.objects.all()
+    serializer_class = PictureSerializer
