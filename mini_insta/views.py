@@ -13,6 +13,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.shortcuts import redirect
+from django.views.generic import *
 
 # Create your views here.
 class LogoutConfirmationView(TemplateView):
@@ -350,3 +351,55 @@ class DeleteLikeView(TemplateView):
         like.delete()
 
         return redirect('show_post', pk=pk)
+
+# API VIEWS #################################################################
+
+from rest_framework import generics
+from .serializers import *
+from django.shortcuts import get_object_or_404
+
+class ProfileDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    """API view to return a specific profile"""
+
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+
+class ProfileListAPIView(generics.ListCreateAPIView):
+    """API view to return a list of profiles"""
+
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+
+class ProfilePostsAPIView(generics.ListCreateAPIView):
+    """API view to return posts of a specific profile"""
+
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        """narrows qs to only posts of the desired profile"""
+
+        profile = get_object_or_404(Profile, pk=self.kwargs['pk'])
+        return Post.objects.filter(profile=profile)
+
+class ProfileFeedAPIView(generics.ListCreateAPIView):
+    """API view to return feed of a specific profile"""
+
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        """narrows qs to only posts of the desired profile"""
+
+        me = get_object_or_404(Profile, pk=self.kwargs['pk'])
+        followed_ids = Follow.objects.filter(follower_profile=me).values_list('profile_id')
+        return (Post.objects.filter(profile_id__in=followed_ids)
+                .prefetch_related('photo_set'))
+
+class CreatePostAPIView(generics.CreateAPIView):
+    """API view to create new post"""
+
+    serializer_class = PostSerializer
+
+    def perform_create(self, serializer):
+        """creates new Post object"""
+        profile = get_object_or_404(Profile, pk=self.kwargs['pk'])
+        serializer.save(profile=profile)  
