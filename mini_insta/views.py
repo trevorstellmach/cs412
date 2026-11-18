@@ -2,6 +2,7 @@
 # Author: Trevor Stellmach, tstell@bu.edu (09/26/26)
 # Description: defines view classes and logic for mini_insta
 
+from contextvars import Token
 from datetime import datetime
 
 from django.shortcuts import render
@@ -11,7 +12,7 @@ from .models import Profile, Post, Photo, Follow, Like
 from .forms import CreatePostForm, UpdateProfileForm, UpdatePostForm, CreateProfileForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login
+from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect
 from django.views.generic import *
 
@@ -354,24 +355,35 @@ class DeleteLikeView(TemplateView):
 
 # API VIEWS #################################################################
 
-from rest_framework import generics
+from rest_framework import generics, status
+from rest_framework.authtoken.models import Token
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from .serializers import *
 from django.shortcuts import get_object_or_404
 
 class ProfileDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     """API view to return a specific profile"""
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
 
 class ProfileListAPIView(generics.ListCreateAPIView):
     """API view to return a list of profiles"""
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
 
 class ProfilePostsAPIView(generics.ListCreateAPIView):
     """API view to return posts of a specific profile"""
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     serializer_class = PostSerializer
 
@@ -385,21 +397,56 @@ class ProfileFeedAPIView(generics.ListCreateAPIView):
     """API view to return feed of a specific profile"""
 
     serializer_class = PostSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         """narrows qs to only posts of the desired profile"""
 
-        me = get_object_or_404(Profile, pk=self.kwargs['pk'])
+        me = get_object_or_404(Profile, user=self.request.user) # 404 if user has no profile
         followed_ids = Follow.objects.filter(follower_profile=me).values_list('profile_id')
-        return (Post.objects.filter(profile_id__in=followed_ids)
-                .prefetch_related('photo_set'))
+        return (Post.objects.filter(profile_id__in=followed_ids))
 
 class CreatePostAPIView(generics.CreateAPIView):
     """API view to create new post"""
 
     serializer_class = PostSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
 
     def perform_create(self, serializer):
         """creates new Post object"""
-        profile = get_object_or_404(Profile, pk=self.kwargs['pk'])
-        serializer.save(profile=profile)  
+        profile = get_object_or_404(Profile, user=self.request.user) # 404 if user has no profile
+        serializer.save(profile=profile)
+
+class LoginAPIView(APIView):
+    """API view to log in user"""
+
+    authentication_classes = []
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        user = authenticate(
+            request,
+            username=request.data.get('username'),
+            password=request.data.get('password'),
+        )
+        if user:
+            token, created = Token.objects.get_or_create(user=user)
+            profile = Profile.objects.filter(user=user).first() # None if user has no profile (e.g. admin)
+            return Response({
+            'token': token.key,
+            'user': {'id': user.id, 'username': user.username},
+            'profile': ProfileSerializer(profile).data if profile else None,
+            })
+        return Response({'error': 'Invalid credentials'}, status=401)
+
+class LogoutAPIView(APIView):
+    """API view to log out, delete's user's token"""
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        request.auth.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

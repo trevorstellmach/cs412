@@ -55,3 +55,18 @@ class PostSerializer(serializers.ModelSerializer):
         if image_url:
             Photo.objects.create(post=post, image_url=image_url, timestamp=now)
         return post
+
+class UserSerializer(serializers.ModelSerializer):
+    """serializer for User model"""
+    password = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = User
+        fields = ['username', 'password', 'email']
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            password=validated_data['password'],
+        )
+        return user

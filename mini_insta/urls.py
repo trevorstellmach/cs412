@@ -31,11 +31,13 @@ urlpatterns = [
     path('post/<int:pk>/delete_like', DeleteLikeView.as_view(), name="delete_like"), # remove like
 
     # API Paths ##############
-    path('api/', ProfileListAPIView.as_view()), # show list of profiles
+    path('api/profiles', ProfileListAPIView.as_view()), # show list of profiles
     path('api/profile/<int:pk>', ProfileDetailAPIView.as_view()), # get specific profile
     path('api/profile/<int:pk>/posts', ProfilePostsAPIView.as_view()), # get posts and photos for one profile
     path('api/profile/<int:pk>/feed', ProfileFeedAPIView.as_view()), # get feed for one profile
-    path('api/profile/<int:pk>/create_post', CreatePostAPIView.as_view()), # create post
+    path('api/profile/create_post', CreatePostAPIView.as_view()), # create post
+    path('api/login', LoginAPIView.as_view()), # login page
+    path('api/logout', LogoutAPIView.as_view()), # logout page
 
 
 ]
